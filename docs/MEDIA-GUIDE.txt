@@ -1,0 +1,78 @@
+
+MEDIA NAMING GUIDE
+
+Put all images here:
+docs/assets/images/
+
+Put homepage video here:
+docs/assets/videos/home-hero.mp4
+
+Use these exact image names:
+
+Homepage:
+- home-hero-poster.jpg
+- about-headshot-01.jpg
+
+Gallery:
+- gallery-headshot-01.jpg
+- gallery-headshot-02.jpg
+- gallery-modeling-01.jpg
+- gallery-modeling-02.jpg
+- gallery-portrait-01.jpg
+- gallery-portrait-02.jpg
+
+Theatre:
+- theatre-play-01-photo-01.jpg
+- theatre-play-01-photo-02.jpg
+- theatre-play-01-photo-03.jpg
+- theatre-play-02-photo-01.jpg
+- theatre-play-02-photo-02.jpg
+- theatre-play-02-photo-03.jpg
+- theatre-play-03-photo-01.jpg
+- theatre-play-03-photo-02.jpg
+- theatre-play-03-photo-03.jpg
+
+Poetry:
+- poetry-book-cover.jpg
+
+Photography:
+- photography-feature-01.jpg
+- photography-grid-01.jpg
+- photography-grid-02.jpg
+- photography-grid-03.jpg
+- photography-grid-04.jpg
+
+VIDEO / EMBED GUIDE
+
+Do NOT upload reels, film clips, or short stories as large repo files if you can avoid it.
+Use Vimeo or YouTube embeds instead.
+
+Where to place links later:
+- reels.html
+  Acting Demo Reel
+  Voiceover Reel
+  Music Reel
+  Director's Reel
+
+- film.html
+  add play links / embeds for:
+  commercials
+  short films
+  experimental
+
+- poetry.html
+  add YouTube embeds for:
+  Short Stories with Sophia
+
+PERFORMANCE NOTES
+
+Best image format:
+- JPG for photos
+- keep most images under 400 KB if possible
+- resize large photos before uploading
+
+Best homepage video:
+- MP4
+- around 10–15 seconds
+- muted loop
+- target under 8 MB if possible

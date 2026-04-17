@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sophie E. Dawson | Film</title>
-  <meta name="description" content="Sophia E. Dawson official website">
+  <title>Sophia Dawson | Film</title>
+  <meta name="description" content="Sophia Dawson official website">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,12 +13,12 @@
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="index.html">
-      <span class="brand-name">Sophie E. Dawson</span>
+      <span class="brand-name">Sophia Dawson</span>
       <span class="brand-sub">Creative Artist</span>
     </a>
     <button class="menu-toggle" aria-label="Toggle menu">Menu</button>
     <nav class="site-nav">
-      <a href="index.html">Home</a><a href="reels.html">Reels</a><a href="gallery.html">Gallery</a><a href="theater.html">Theater</a><a href="film.html" class="active">Film</a><a href="poetry.html">Poetry</a><a href="photography.html">Photography</a><a href="production.html">Production</a><a href="contact.html">Contact</a>
+      <a href="index.html">Home</a><a href="reels.html">Reels</a><a href="gallery.html">Gallery</a><a href="theatre.html">Theatre</a><a href="film.html" class="active">Film</a><a href="poetry.html">Poetry</a><a href="photography.html">Photography</a><a href="production.html">Production</a><a href="contact.html">Contact</a>
     </nav>
   </div>
 </header>
@@ -28,10 +28,11 @@
 <section class="section">
   <div class="container">
     <h1 class="section-title">Film</h1>
-    <p class="section-lead">Commercials moved into this page. Organized by category so the flow feels cleaner and less repetitive.</p>
+    <p class="section-lead">Starts on all. Use the left side as a category rail and embed playable videos for commercials, short films, and experimental work. Features can stay image-based.</p>
 
     <div class="film-layout">
       <aside class="category-menu">
+        <a href="#all">All</a>
         <a href="#commercials">Commercials</a>
         <a href="#short-films">Short Films</a>
         <a href="#features">Features</a>
@@ -39,41 +40,56 @@
       </aside>
 
       <div class="category-section">
+        <section id="all" class="credit-card">
+          <div class="meta">All</div>
+          <h3>All Projects</h3>
+          <div class="credit-list">
+            <div class="credit-line"><strong>Project Title</strong><span>Commercial / Role Name</span><span><a href="#">Play Link</a></span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Short Film / Role Name</span><span><a href="#">Play Link</a></span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Feature / Role Name</span><span>Photo Only</span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Experimental / Creator</span><span><a href="#">Play Link</a></span></div>
+          </div>
+        </section>
+
         <section id="commercials" class="credit-card">
-          <div class="meta">Screen</div>
+          <div class="meta">Commercials</div>
           <h3>Commercials</h3>
           <div class="credit-list">
-            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span>2026</span></div>
-            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span>2025</span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
           </div>
         </section>
 
         <section id="short-films" class="credit-card">
-          <div class="meta">Screen</div>
+          <div class="meta">Short Films</div>
           <h3>Short Films</h3>
           <div class="credit-list">
-            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span>2026</span></div>
-            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span>2024</span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
           </div>
         </section>
 
         <section id="features" class="credit-card">
-          <div class="meta">Screen</div>
+          <div class="meta">Features</div>
           <h3>Features</h3>
           <div class="credit-list">
-            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span>2025</span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span>Photo Only</span></div>
           </div>
         </section>
 
         <section id="experimental" class="credit-card">
-          <div class="meta">Original Work</div>
+          <div class="meta">Experimental</div>
           <h3>Experimental</h3>
           <div class="credit-list">
-            <div class="credit-line"><strong>Project Title</strong><span>Creator / Performer</span><span>2026</span></div>
-            <div class="credit-line"><strong>Project Title</strong><span>Creator / Performer</span><span>2024</span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Creator / Performer</span><span><a href="#">Play Link</a></span></div>
+            <div class="credit-line"><strong>Project Title</strong><span>Creator / Performer</span><span><a href="#">Play Link</a></span></div>
           </div>
         </section>
       </div>
+    </div>
+
+    <div class="media-note" style="margin-top:22px;">
+      For film, keep videos external. Use Vimeo or YouTube links/embeds instead of uploading long films to the repo. That keeps the site fast.
     </div>
   </div>
 </section>
@@ -83,10 +99,10 @@
 <footer class="site-footer">
   <div class="container footer-inner">
     <div>
-      <div class="footer-name">Sophie E. Dawson</div>
+      <div class="footer-name">Sophia Dawson</div>
       <div class="footer-sub">Creative Artist</div>
     </div>
-    <div class="footer-note">Built for GitHub Pages · Lightweight by design</div>
+    <div class="footer-note">Optimized for GitHub Pages · Lightweight media-first layout</div>
   </div>
 </footer>
 
