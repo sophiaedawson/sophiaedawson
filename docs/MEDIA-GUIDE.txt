@@ -1,4 +1,3 @@
-
 MEDIA NAMING GUIDE
 
 Put all images here:
@@ -7,52 +6,37 @@ docs/assets/images/
 Put homepage video here:
 docs/assets/videos/home-hero.mp4
 
-Use these exact image names:
+Gallery
+- gallery-headshot-01.jpg through gallery-headshot-22.jpg
+- gallery-modeling-01.jpg through gallery-modeling-66.jpg
+- gallery-portrait-01.jpg through gallery-portrait-13.jpg
+  (These show as BTS on the page)
 
-Homepage:
-- home-hero-poster.jpg
-- about-headshot-01.jpg
+Theatre
+- theatre-play-01-photo-01.jpg through theatre-play-01-photo-12.jpg
+  Title: A Mid Summer Night’s Dream
+- theatre-play-02-photo-01.jpg through theatre-play-02-photo-12.jpg
+  Title: The Winter’s Tale
+- theatre-play-03-photo-01.jpg through theatre-play-03-photo-12.jpg
+  Title: The Revolutionists
 
-Gallery:
-- gallery-headshot-01.jpg
-- gallery-headshot-02.jpg
-- gallery-modeling-01.jpg
-- gallery-modeling-02.jpg
-- gallery-portrait-01.jpg
-- gallery-portrait-02.jpg
-
-Theatre:
-Play 1
-- theatre-play-01-photo-01.jpg through theatre-play-01-photo-09.jpg
-Play 2
-- theatre-play-02-photo-01.jpg through theatre-play-02-photo-09.jpg
-Play 3
-- theatre-play-03-photo-01.jpg through theatre-play-03-photo-09.jpg
-
-Poetry:
+Poetry
 - poetry-book-cover.jpg
+- poetry-book-cover2.jpg
 
-Photography:
-- photography-feature-01.jpg
-- photography-grid-01.jpg
-- photography-grid-02.jpg
-- photography-grid-03.jpg
-- photography-grid-04.jpg
-- photography-grid-05.jpg
-- photography-grid-06.jpg
+Photography
+- photography-grid-01.jpg through photography-grid-40.jpg
 
-PERFORMANCE NOTES
+Performance optimization
+- all gallery / theatre / photography images use loading="lazy"
+- gallery and photography pages use filters + Load More
+- reels and short stories use click-to-load Vimeo embeds
+- keep most JPGs under about 400 KB when possible
+- keep the homepage video under about 8 MB when possible
 
-Best image format:
-- JPG for photos
-- keep most images under 400 KB if possible
-- resize large photos before uploading
+Contact info wired:
+- sophiaedawson@gmail.com
+- @sophiaedawson
 
-Best homepage video:
-- MP4
-- around 10–15 seconds
-- muted loop
-- target under 8 MB if possible
-
-Do not delete /docs before replacing it.
-Upload the new /docs over the old /docs, then commit.
+Amazon book link wired:
+https://www.amazon.ca/Waltz-Moonflower-Sophia-Dawson/dp/B0GK5XSGZB

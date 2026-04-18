@@ -26,14 +26,82 @@
     <main>
 <section class="section"><div class="container">
 <h1 class="section-title">Reels</h1>
-<p class="section-lead">Replace each placeholder with a Vimeo embed later. The layout is intentionally simple so videos stay fast and clean on every device.</p>
+<p class="section-lead">These load on click instead of all at once, so the page stays fast while still letting you watch everything on the site.</p>
 <div class="reels-stack">
-<article class="reel-card"><div class="embed-box"><div class="embed-placeholder">Acting Demo Reel<br><small>Replace with Vimeo embed</small></div></div><div><div class="meta">Performance</div><h3>Acting Demo Reel</h3><p>Main acting reel section for featured screen work and performance clips.</p></div></article>
-<article class="reel-card"><div class="embed-box"><div class="embed-placeholder">Voiceover Reel<br><small>Replace with Vimeo or audio embed</small></div></div><div><div class="meta">Voice</div><h3>Voiceover Reel</h3><p>Commercial, character, and narration work can live here.</p></div></article>
-<article class="reel-card"><div class="embed-box"><div class="embed-placeholder">Music Reel<br><small>Replace with Vimeo or YouTube embed</small></div></div><div><div class="meta">Music</div><h3>Music Reel</h3><p>Performance clips, visuals, or music-centered creative work.</p></div></article>
-<article class="reel-card"><div class="embed-box"><div class="embed-placeholder">Director's Reel<br><small>Replace with Vimeo embed</small></div></div><div><div class="meta">Direction</div><h3>Director's Reel</h3><p>Original visual language and work made behind the camera.</p></div></article>
+
+<article class="reel-card">
+  <div class="video-card" data-video-src="https://player.vimeo.com/video/1101738528?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" data-video-title="Sophia Dawson - Demo Reel">
+    <div class="video-shell">
+      <div>
+        <strong>Acting Demo Reel</strong>
+        <small>Click to load video</small>
+        <button class="video-load" type="button">Load Video</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="meta">Performance</div>
+    <h3>Acting Demo Reel</h3>
+    <p>Main acting reel section for featured screen work and performance clips.</p>
+  </div>
+</article>
+
+
+<article class="reel-card">
+  <div class="video-card" data-video-src="https://player.vimeo.com/video/888312901?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" data-video-title="VOICE OVER REEL- SOPHIA DAWSON">
+    <div class="video-shell">
+      <div>
+        <strong>Voiceover Reel</strong>
+        <small>Click to load video</small>
+        <button class="video-load" type="button">Load Video</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="meta">Performance</div>
+    <h3>Voiceover Reel</h3>
+    <p>Commercial, character, and narration work can live here.</p>
+  </div>
+</article>
+
+
+<article class="reel-card">
+  <div class="video-card" data-video-src="https://player.vimeo.com/video/1049776528?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" data-video-title="Sophia Dawson - Music Reel">
+    <div class="video-shell">
+      <div>
+        <strong>Music Reel</strong>
+        <small>Click to load video</small>
+        <button class="video-load" type="button">Load Video</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="meta">Performance</div>
+    <h3>Music Reel</h3>
+    <p>Performance clips, visuals, or music-centered creative work.</p>
+  </div>
+</article>
+
+
+<article class="reel-card">
+  <div class="video-card" data-video-src="https://player.vimeo.com/video/921602487?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" data-video-title="Director&#039;s Reel">
+    <div class="video-shell">
+      <div>
+        <strong>Director's Reel</strong>
+        <small>Click to load video</small>
+        <button class="video-load" type="button">Load Video</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="meta">Performance</div>
+    <h3>Director's Reel</h3>
+    <p>Original visual language and work made behind the camera.</p>
+  </div>
+</article>
+
 </div>
-<div class="media-note" style="margin-top:22px;">Keep reels embedded from Vimeo instead of uploading large video files into the repo. It’s faster, lighter, and better for GitHub Pages.</div>
+<div class="media-note" style="margin-top:22px;">Videos now use click-to-load embeds for speed. That keeps the page from loading four Vimeo players the second someone lands on it.</div>
 </div></section>
 </main>
     
@@ -43,7 +111,7 @@
       <div class="footer-name">Sophia Dawson</div>
       <div class="footer-sub">Creative Artist</div>
     </div>
-    <div class="footer-note">Optimized for GitHub Pages · Lightweight media-first layout</div>
+    <div class="footer-note">Optimized for GitHub Pages · lazy images · click-to-load videos</div>
   </div>
 </footer>
 

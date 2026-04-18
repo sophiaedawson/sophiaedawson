@@ -28,7 +28,7 @@
 <h1 class="section-title">Film</h1>
 <p class="section-lead">The left side filters the right side. “All” shows every project together. Choosing a category hides the rest and only shows that category.</p>
 <div class="film-layout">
-  <aside class="category-menu" data-filter-group data-target=".film-results > .credit-card">
+  <aside class="category-menu" data-film-filter>
     <a href="#all" class="active" data-filter="all">All</a>
     <a href="#commercials" data-filter="commercials">Commercials</a>
     <a href="#short-films" data-filter="short-films">Short Films</a>
@@ -36,43 +36,44 @@
     <a href="#experimental" data-filter="experimental">Experimental</a>
   </aside>
   <div class="film-results">
-    
-<article class="credit-card" data-category="commercials">
-  <div class="meta">Commercials</div>
-  <h3>Project Title</h3>
-  <div class="credit-list">
-    <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
-    <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
-  </div>
-</article>
-<article class="credit-card" data-category="short-films">
-  <div class="meta">Short Films</div>
-  <h3>Project Title</h3>
-  <div class="credit-list">
-    <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
-    <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
-  </div>
-</article>
-<article class="credit-card" data-category="features">
-  <div class="meta">Features</div>
-  <h3>Project Title</h3>
-  <p>Feature entry with photo-only support if there is no public video link available.</p>
-  <div class="credit-list">
-    <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span>Photo Only</span></div>
-  </div>
-</article>
-<article class="credit-card" data-category="experimental">
-  <div class="meta">Experimental</div>
-  <h3>Project Title</h3>
-  <div class="credit-list">
-    <div class="credit-line"><strong>Project Title</strong><span>Creator / Performer</span><span><a href="#">Play Link</a></span></div>
-    <div class="credit-line"><strong>Project Title</strong><span>Creator / Performer</span><span><a href="#">Play Link</a></span></div>
-  </div>
-</article>
+    <article class="credit-card" data-category="commercials">
+      <div class="meta">Commercials</div>
+      <h3>Project Title</h3>
+      <div class="credit-list">
+        <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
+        <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
+      </div>
+    </article>
 
+    <article class="credit-card" data-category="short-films">
+      <div class="meta">Short Films</div>
+      <h3>Project Title</h3>
+      <div class="credit-list">
+        <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
+        <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span><a href="#">Play Link</a></span></div>
+      </div>
+    </article>
+
+    <article class="credit-card" data-category="features">
+      <div class="meta">Features</div>
+      <h3>Project Title</h3>
+      <p>Feature entry with photo-only support if there is no public video link available.</p>
+      <div class="credit-list">
+        <div class="credit-line"><strong>Project Title</strong><span>Role Name</span><span>Photo Only</span></div>
+      </div>
+    </article>
+
+    <article class="credit-card" data-category="experimental">
+      <div class="meta">Experimental</div>
+      <h3>Project Title</h3>
+      <div class="credit-list">
+        <div class="credit-line"><strong>Project Title</strong><span>Creator / Performer</span><span><a href="#">Play Link</a></span></div>
+        <div class="credit-line"><strong>Project Title</strong><span>Creator / Performer</span><span><a href="#">Play Link</a></span></div>
+      </div>
+    </article>
   </div>
 </div>
-<div class="media-note" style="margin-top:22px;">For film, keep videos external. Use Vimeo or YouTube links or embeds instead of uploading long films to the repo.</div>
+<div class="media-note" style="margin-top:22px;">Film stays lightweight here too. Use play links or embed single projects only when you really want them foregrounded.</div>
 </div></section>
 </main>
     
@@ -82,7 +83,7 @@
       <div class="footer-name">Sophia Dawson</div>
       <div class="footer-sub">Creative Artist</div>
     </div>
-    <div class="footer-note">Optimized for GitHub Pages · Lightweight media-first layout</div>
+    <div class="footer-note">Optimized for GitHub Pages · lazy images · click-to-load videos</div>
   </div>
 </footer>
 
