@@ -32,21 +32,22 @@
    Sage green + gold accents, fixes for reels/poetry/film/iPhone, etc.
    ======================================================================== */
 
-/* Refreshed palette: deeper sage-and-gold body background, more pop */
+/* Refreshed palette: rich sage-green body, acrylic-feel mixed greens with subtle gold warmth */
 body{
   background:
-    radial-gradient(1200px 800px at 12% 0%, rgba(127,146,116,.28), transparent 60%),
-    radial-gradient(900px 700px at 95% 18%, rgba(198,161,90,.22), transparent 65%),
-    radial-gradient(1000px 900px at 50% 110%, rgba(31,58,47,.18), transparent 60%),
-    linear-gradient(180deg, #f4ead4 0%, #e8dec1 45%, #dfd4b1 100%);
+    radial-gradient(1400px 900px at 8% 0%, rgba(127,146,116,.55), transparent 60%),
+    radial-gradient(1000px 800px at 92% 12%, rgba(198,161,90,.22), transparent 65%),
+    radial-gradient(1100px 1000px at 55% 100%, rgba(31,58,47,.40), transparent 65%),
+    radial-gradient(700px 600px at 30% 75%, rgba(166,180,140,.30), transparent 70%),
+    linear-gradient(180deg, #c8d3b8 0%, #b6c2a1 35%, #9eae8a 70%, #859875 100%);
 }
 
-/* Cards get a softer green-tinged paper feel and a gold edge accent */
+/* Cards: green-tinged pearl, like an acrylic wash. No more cream. */
 .portrait-card,.text-card,.reel-card,.gallery-item,.production-entry,
 .story-card,.book-card,.credit-card,.resume-card,.contact-card,.photo-feature{
-  background: linear-gradient(180deg, rgba(247,237,221,.92), rgba(238,228,205,.85));
-  border:1px solid rgba(127,146,116,.32);
-  box-shadow: 0 18px 50px rgba(16,39,31,.16), inset 0 1px 0 rgba(255,255,255,.5);
+  background: linear-gradient(180deg, rgba(232,238,222,.92), rgba(212,222,198,.88));
+  border:1px solid rgba(127,146,116,.42);
+  box-shadow: 0 18px 50px rgba(16,39,31,.22), inset 0 1px 0 rgba(255,255,255,.55);
 }
 
 /* Subtle gold underline / accent on section titles */
@@ -429,4 +430,95 @@ body.pdf-open{ overflow: hidden; }
 @media (max-width: 760px){
   .pdf-lightbox{ padding: 56px 10px 10px; }
   .pdf-lightbox-close{ top: 12px; right: 12px; width: 40px; height: 40px; font-size: 1.4rem; }
+}
+
+/* ========================================================================
+   ROUND 7: Stronger green color identity, back-to-top button
+   ======================================================================== */
+
+/* Make sure the rich sage palette wins over the original cream linear-gradient */
+html, body{
+  background-color: #95a87f;
+}
+body{
+  /* Same gradient as above, repeated here at higher specificity to win the cascade */
+  background:
+    radial-gradient(1400px 900px at 8% 0%, rgba(127,146,116,.55), transparent 60%),
+    radial-gradient(1000px 800px at 92% 12%, rgba(198,161,90,.22), transparent 65%),
+    radial-gradient(1100px 1000px at 55% 100%, rgba(31,58,47,.40), transparent 65%),
+    radial-gradient(700px 600px at 30% 75%, rgba(166,180,140,.30), transparent 70%),
+    linear-gradient(180deg, #c8d3b8 0%, #b6c2a1 35%, #9eae8a 70%, #859875 100%) !important;
+  background-attachment: fixed;
+}
+
+/* Lead text reads better on the new richer green */
+.section-lead{
+  color: #2c3e34;
+}
+
+/* Body text inside cards stays warm and dark green */
+.text-card p,
+.book-card .book-text p,
+.credit-card p,
+.story-card p,
+.reel-card p,
+.contact-item,
+ul.clean li{
+  color: #1f3527;
+}
+
+/* Form fields adapt to the new background */
+.contact-form input,
+.contact-form textarea{
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(31,58,47,.25);
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder{
+  color: rgba(31,58,47,.55);
+}
+
+/* ----- BACK TO TOP BUTTON ----- */
+.back-to-top{
+  position: fixed;
+  right: 22px;
+  bottom: 28px;
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-deep) 100%);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(16,39,31,.45), inset 0 1px 0 rgba(255,255,255,.18);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease, background .25s ease;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+}
+.back-to-top.visible{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover{
+  background: linear-gradient(135deg, var(--gold-deep) 0%, var(--green) 100%);
+}
+@media (max-width: 480px){
+  .back-to-top{ right: 14px; bottom: 18px; width: 46px; height: 46px; font-size: 1.2rem; }
+}
+
+/* Make sure the sticky film sidebar stays sticky on desktop and scrolls naturally inside the page */
+@media (min-width: 981px){
+  .film-layout{ align-items: start; }
+  .category-menu{
+    position: sticky;
+    top: 100px;
+    align-self: start;
+  }
 }

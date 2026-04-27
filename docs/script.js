@@ -173,4 +173,28 @@ document.addEventListener('DOMContentLoaded', function () {
       closePdf();
     }
   });
+
+  // ============================================================
+  // BACK TO TOP BUTTON
+  // Appears when the user scrolls down. Click to smoothly scroll
+  // back to the top of the page.
+  // ============================================================
+  const backTop=document.createElement('button');
+  backTop.className='back-to-top';
+  backTop.type='button';
+  backTop.setAttribute('aria-label','Back to top');
+  backTop.innerHTML='<span aria-hidden="true">↑</span>';
+  document.body.appendChild(backTop);
+  function toggleBackTop(){
+    if(window.pageYOffset>400){
+      backTop.classList.add('visible');
+    }else{
+      backTop.classList.remove('visible');
+    }
+  }
+  window.addEventListener('scroll',toggleBackTop,{passive:true});
+  backTop.addEventListener('click',()=>{
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+  toggleBackTop();
 });
