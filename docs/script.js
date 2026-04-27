@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const toggle=document.querySelector('.menu-toggle'),nav=document.querySelector('.site-nav');
   if(toggle&&nav)toggle.addEventListener('click',()=>nav.classList.toggle('open'));
   const heroVideo=document.querySelector('.hero-video video');
-  function tryPlayHero(){if(heroVideo){heroVideo.muted=true;heroVideo.defaultMuted=true;heroVideo.setAttribute('muted','');heroVideo.setAttribute('playsinline','');heroVideo.setAttribute('webkit-playsinline','');heroVideo.removeAttribute('controls');const p=heroVideo.play();if(p&&p.catch)p.catch(()=>{});}}
+  const heroSection=document.querySelector('.hero-video');
+  function markPlaying(){if(heroSection)heroSection.classList.add('is-playing');}
+  function tryPlayHero(){if(heroVideo){heroVideo.muted=true;heroVideo.defaultMuted=true;heroVideo.setAttribute('muted','');heroVideo.setAttribute('playsinline','');heroVideo.setAttribute('webkit-playsinline','');heroVideo.removeAttribute('controls');const p=heroVideo.play();if(p&&p.then)p.then(markPlaying).catch(()=>{});else markPlaying();}}
   if(heroVideo){
     heroVideo.removeAttribute('poster');
     heroVideo.removeAttribute('controls');
@@ -19,13 +21,18 @@ document.addEventListener('DOMContentLoaded', function () {
       document.addEventListener(evt,tryPlayHero,{passive:true});
     });
     heroVideo.addEventListener('canplay',tryPlayHero);
+    heroVideo.addEventListener('canplaythrough',tryPlayHero);
     heroVideo.addEventListener('loadedmetadata',tryPlayHero);
+    heroVideo.addEventListener('playing',markPlaying);
     heroVideo.addEventListener('ended',()=>{heroVideo.currentTime=0;tryPlayHero();});
     // Retry several times on iOS where the first attempt sometimes fails silently
     tryPlayHero();
-    setTimeout(tryPlayHero,300);
-    setTimeout(tryPlayHero,1000);
-    setTimeout(tryPlayHero,2500);
+    setTimeout(tryPlayHero,150);
+    setTimeout(tryPlayHero,500);
+    setTimeout(tryPlayHero,1500);
+    setTimeout(tryPlayHero,3000);
+    // Fallback: even if autoplay fails, reveal the video after 3s so the user sees the first frame instead of a blank box
+    setTimeout(markPlaying,3000);
   }
   // Theatre carousel — wraps around so Next at last slide returns to slide 1, Prev at slide 1 jumps to last.
   document.querySelectorAll('.carousel').forEach(function(carousel){
@@ -48,9 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const storyList=document.querySelector('[data-story-list]');
   if(storyList){
     const cards=Array.from(storyList.querySelectorAll('[data-story-card]'));
-    const pageSize=2;
+    function getPageSize(){return window.matchMedia('(max-width: 760px)').matches?1:2;}
+    let pageSize=getPageSize();
     let page=0;
-    const totalPages=Math.max(1,Math.ceil(cards.length/pageSize));
+    function getTotalPages(){return Math.max(1,Math.ceil(cards.length/pageSize));}
     // Replace any existing single load-more button with a prev/next pager
     const oldMore=document.querySelector('[data-story-load-more]');
     const pager=document.createElement('div');
@@ -73,6 +81,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
     function renderStories(){
+      const totalPages=getTotalPages();
+      if(page>=totalPages)page=totalPages-1;
       const start=page*pageSize;
       const end=start+pageSize;
       cards.forEach((card,idx)=>{
@@ -85,7 +95,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if(nextBtn)nextBtn.disabled=page>=totalPages-1;
     }
     if(prevBtn)prevBtn.addEventListener('click',()=>{if(page>0){page--;renderStories();window.scrollTo({top:storyList.offsetTop-100,behavior:'smooth'});}});
-    if(nextBtn)nextBtn.addEventListener('click',()=>{if(page<totalPages-1){page++;renderStories();window.scrollTo({top:storyList.offsetTop-100,behavior:'smooth'});}});
+    if(nextBtn)nextBtn.addEventListener('click',()=>{if(page<getTotalPages()-1){page++;renderStories();window.scrollTo({top:storyList.offsetTop-100,behavior:'smooth'});}});
+    // Re-render if user resizes between mobile and desktop breakpoints
+    let resizeTimer;
+    window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{const newSize=getPageSize();if(newSize!==pageSize){pageSize=newSize;page=0;renderStories();}},200);},{passive:true});
     renderStories();
   }
 
