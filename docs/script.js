@@ -5,32 +5,94 @@ document.addEventListener('DOMContentLoaded', function () {
   const heroVideo=document.querySelector('.hero-video video');
   function tryPlayHero(){if(heroVideo){heroVideo.muted=true;heroVideo.setAttribute('muted','');heroVideo.setAttribute('playsinline','');heroVideo.setAttribute('webkit-playsinline','');const p=heroVideo.play();if(p&&p.catch)p.catch(()=>{});}}
   if(heroVideo){heroVideo.removeAttribute('poster');heroVideo.preload='auto';heroVideo.loop=true;heroVideo.muted=true;heroVideo.playsInline=true;heroVideo.setAttribute('webkit-playsinline','');['DOMContentLoaded','load','scroll','touchstart','touchend','visibilitychange','pageshow'].forEach(evt=>{window.addEventListener(evt,tryPlayHero,{passive:true});document.addEventListener(evt,tryPlayHero,{passive:true});});heroVideo.addEventListener('canplay',tryPlayHero);heroVideo.addEventListener('ended',()=>{heroVideo.currentTime=0;tryPlayHero();});tryPlayHero();}
-  document.querySelectorAll('.carousel').forEach(function(carousel){const slides=carousel.querySelectorAll('.carousel-slide'),prev=carousel.querySelector('.prev'),next=carousel.querySelector('.next'),count=carousel.querySelector('.carousel-count');let index=0;function render(){slides.forEach((s,i)=>s.classList.toggle('active',i===index));if(count)count.textContent=(index+1)+' / '+slides.length;if(prev)prev.disabled=index===0;if(next)next.disabled=index===slides.length-1;}if(prev)prev.addEventListener('click',e=>{e.stopPropagation();if(index>0){index--;render();}});if(next)next.addEventListener('click',e=>{e.stopPropagation();if(index<slides.length-1){index++;render();}});render();});
+  // Theatre carousel — wraps around so Next at last slide returns to slide 1, Prev at slide 1 jumps to last.
+  document.querySelectorAll('.carousel').forEach(function(carousel){
+    const slides=carousel.querySelectorAll('.carousel-slide'),prev=carousel.querySelector('.prev'),next=carousel.querySelector('.next'),count=carousel.querySelector('.carousel-count');
+    let index=0;
+    function render(){
+      slides.forEach((s,i)=>s.classList.toggle('active',i===index));
+      if(count)count.textContent=(index+1)+' / '+slides.length;
+    }
+    if(prev)prev.addEventListener('click',e=>{e.stopPropagation();index=(index-1+slides.length)%slides.length;render();});
+    if(next)next.addEventListener('click',e=>{e.stopPropagation();index=(index+1)%slides.length;render();});
+    render();
+  });
   function initFilterArea(area){const items=Array.from(area.querySelectorAll('[data-item]')),buttons=Array.from(area.querySelectorAll('[data-filter]')),loadMore=area.querySelector('[data-load-more]'),perPage=parseInt(area.getAttribute('data-per-page')||'12',10);let current='all',visible=perPage;function filtered(){return items.filter(item=>{const tags=(item.getAttribute('data-category')||'').split(' ');return current==='all'||tags.includes(current);});}function render(){const f=filtered();items.forEach(i=>i.classList.add('hidden'));f.forEach((i,idx)=>{if(idx<visible)i.classList.remove('hidden');});if(loadMore)loadMore.classList.toggle('hidden',f.length<=visible);}buttons.forEach(btn=>btn.addEventListener('click',()=>{buttons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');current=btn.getAttribute('data-filter');visible=perPage;render();}));if(loadMore)loadMore.addEventListener('click',()=>{visible+=perPage;render();});render();}
   document.querySelectorAll('[data-filter-area]').forEach(initFilterArea);
   const filmMenu=document.querySelector('[data-film-filter]');if(filmMenu){const links=Array.from(filmMenu.querySelectorAll('[data-filter]')),cards=Array.from(document.querySelectorAll('.film-results>.credit-card'));function render(filter){links.forEach(l=>l.classList.toggle('active',l.getAttribute('data-filter')===filter));cards.forEach(c=>{const cat=c.getAttribute('data-category');c.classList.toggle('hidden',!(filter==='all'||filter===cat));});}links.forEach(l=>l.addEventListener('click',e=>{e.preventDefault();render(l.getAttribute('data-filter'));}));render('all');}
   const book=document.querySelector('[data-book-viewer]');if(book){const img=book.querySelector('img'),btn=book.querySelector('[data-book-toggle]');let front=true;if(img){img.src='assets/images/poetry-book-cover2.jpg';img.alt='Poetry book cover front';}if(btn&&img)btn.addEventListener('click',()=>{front=!front;img.src=front?'assets/images/poetry-book-cover2.jpg':'assets/images/poetry-book-cover.jpg';img.alt=front?'Poetry book cover front':'Poetry book cover back';btn.textContent=front?'View Back Cover':'View Front Cover';});}
 
+  // Short Stories pager — 3 at a time with Previous / Next, no slow incremental loading.
   const storyList=document.querySelector('[data-story-list]');
   if(storyList){
     const cards=Array.from(storyList.querySelectorAll('[data-story-card]'));
-    const more=document.querySelector('[data-story-load-more]');
-    let storyVisible=3;
+    const pageSize=3;
+    let page=0;
+    const totalPages=Math.max(1,Math.ceil(cards.length/pageSize));
+    // Replace any existing single load-more button with a prev/next pager
+    const oldMore=document.querySelector('[data-story-load-more]');
+    const pager=document.createElement('div');
+    pager.className='story-pager';
+    pager.innerHTML='<button class="ghost-button" type="button" data-story-prev>← Previous</button><span class="story-page-count" data-story-count></span><button class="pill-button" type="button" data-story-next>Next →</button>';
+    if(oldMore&&oldMore.parentNode){oldMore.parentNode.replaceChild(pager,oldMore);}else{storyList.parentNode.appendChild(pager);}
+    const prevBtn=pager.querySelector('[data-story-prev]');
+    const nextBtn=pager.querySelector('[data-story-next]');
+    const countEl=pager.querySelector('[data-story-count]');
     function loadStoryFrame(card){
       const frame=card.querySelector('iframe[data-src]');
       if(frame){frame.src=frame.getAttribute('data-src');frame.removeAttribute('data-src');}
     }
-    function renderStories(){
-      cards.forEach((card,idx)=>{
-        const show=idx<storyVisible;
-        card.classList.toggle('hidden',!show);
-        if(show)loadStoryFrame(card);
-      });
-      if(more)more.classList.toggle('hidden',storyVisible>=cards.length);
+    function unloadStoryFrame(card){
+      // Stop hidden iframes from playing/loading in the background
+      const frame=card.querySelector('iframe');
+      if(frame&&frame.src&&!frame.hasAttribute('data-src')){
+        frame.setAttribute('data-src',frame.src);
+        frame.src='';
+      }
     }
-    if(more)more.addEventListener('click',()=>{storyVisible+=3;renderStories();});
+    function renderStories(){
+      const start=page*pageSize;
+      const end=start+pageSize;
+      cards.forEach((card,idx)=>{
+        const show=idx>=start&&idx<end;
+        card.classList.toggle('hidden',!show);
+        if(show)loadStoryFrame(card);else unloadStoryFrame(card);
+      });
+      if(countEl)countEl.textContent=(page+1)+' / '+totalPages;
+      if(prevBtn)prevBtn.disabled=page===0;
+      if(nextBtn)nextBtn.disabled=page>=totalPages-1;
+    }
+    if(prevBtn)prevBtn.addEventListener('click',()=>{if(page>0){page--;renderStories();window.scrollTo({top:storyList.offsetTop-100,behavior:'smooth'});}});
+    if(nextBtn)nextBtn.addEventListener('click',()=>{if(page<totalPages-1){page++;renderStories();window.scrollTo({top:storyList.offsetTop-100,behavior:'smooth'});}});
     renderStories();
   }
 
-  const lb=document.createElement('div');lb.className='lightbox';lb.innerHTML='<button class="lightbox-close" type="button">Close</button><button class="lightbox-prev" type="button">←</button><img alt=""><button class="lightbox-next" type="button">→</button>';document.body.appendChild(lb);const lbImg=lb.querySelector('img'),close=lb.querySelector('.lightbox-close'),prev=lb.querySelector('.lightbox-prev'),next=lb.querySelector('.lightbox-next');let currentImages=[],currentIndex=0;function openLightbox(img){const area=img.closest('[data-lightbox-area]');currentImages=Array.from((area||document).querySelectorAll('img')).filter(i=>!i.closest('.hidden')&&i.offsetParent!==null);currentIndex=Math.max(0,currentImages.indexOf(img));renderLightbox();lb.classList.add('open');}function renderLightbox(){const img=currentImages[currentIndex];if(!img)return;lbImg.src=img.src;lbImg.alt=img.alt||'';}document.querySelectorAll('[data-lightbox-area] img').forEach(img=>img.addEventListener('click',()=>openLightbox(img)));close.addEventListener('click',()=>lb.classList.remove('open'));lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('open');});prev.addEventListener('click',()=>{if(currentImages.length){currentIndex=(currentIndex-1+currentImages.length)%currentImages.length;renderLightbox();}});next.addEventListener('click',()=>{if(currentImages.length){currentIndex=(currentIndex+1)%currentImages.length;renderLightbox();}});
+  // Lightbox + keyboard nav (arrow keys to navigate, space or esc to close), no mobile double-tap zoom on lightbox image
+  const lb=document.createElement('div');lb.className='lightbox';lb.innerHTML='<button class="lightbox-close" type="button">Close</button><button class="lightbox-prev" type="button">←</button><img alt=""><button class="lightbox-next" type="button">→</button>';document.body.appendChild(lb);
+  const lbImg=lb.querySelector('img'),close=lb.querySelector('.lightbox-close'),prev=lb.querySelector('.lightbox-prev'),next=lb.querySelector('.lightbox-next');
+  let currentImages=[],currentIndex=0;
+  function openLightbox(img){const area=img.closest('[data-lightbox-area]');currentImages=Array.from((area||document).querySelectorAll('img')).filter(i=>!i.closest('.hidden')&&i.offsetParent!==null);currentIndex=Math.max(0,currentImages.indexOf(img));renderLightbox();lb.classList.add('open');}
+  function renderLightbox(){const img=currentImages[currentIndex];if(!img)return;lbImg.src=img.src;lbImg.alt=img.alt||'';}
+  function closeLightbox(){lb.classList.remove('open');}
+  function nextLightbox(){if(currentImages.length){currentIndex=(currentIndex+1)%currentImages.length;renderLightbox();}}
+  function prevLightbox(){if(currentImages.length){currentIndex=(currentIndex-1+currentImages.length)%currentImages.length;renderLightbox();}}
+  document.querySelectorAll('[data-lightbox-area] img').forEach(img=>img.addEventListener('click',()=>openLightbox(img)));
+  close.addEventListener('click',closeLightbox);
+  lb.addEventListener('click',e=>{if(e.target===lb)closeLightbox();});
+  prev.addEventListener('click',prevLightbox);
+  next.addEventListener('click',nextLightbox);
+  // Keyboard: ← / → navigate, Space or Esc closes lightbox
+  document.addEventListener('keydown',e=>{
+    if(!lb.classList.contains('open'))return;
+    if(e.key==='ArrowLeft'){e.preventDefault();prevLightbox();}
+    else if(e.key==='ArrowRight'){e.preventDefault();nextLightbox();}
+    else if(e.key===' '||e.key==='Spacebar'||e.key==='Escape'){e.preventDefault();closeLightbox();}
+  });
+  // Prevent iOS double-tap zoom on the lightbox image
+  let lastTap=0;
+  lbImg.addEventListener('touchend',e=>{
+    const now=Date.now();
+    if(now-lastTap<350){e.preventDefault();}
+    lastTap=now;
+  },{passive:false});
 });
