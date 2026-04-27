@@ -202,3 +202,115 @@ a, button, .filter-chip, .pill-button, .ghost-button,
   .book-card .book-text p{ font-size: 1.15rem; }
   .story-pager{ gap: 12px; }
 }
+
+/* ========================================================================
+   ROUND 2 REVISIONS — APPENDED, OVERRIDES ABOVE
+   Bigger hero, iOS autoplay, no horizontal scroll, smoother short-stories
+   ======================================================================== */
+
+/* -------- Prevent horizontal scroll site-wide on mobile -------- */
+html, body{
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.site-shell{
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+img, video, iframe{
+  max-width: 100%;
+}
+/* Container already uses calc(100% - 32px) which is fine; just be sure nothing forces wider */
+.container{ max-width: 100%; }
+
+/* -------- HERO: bigger on all platforms, fully fills the viewport on phones -------- */
+.hero-video{
+  min-height: 92svh;            /* was 84svh */
+}
+.hero-video video{
+  height: 92svh;                /* was 84svh */
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Strip iOS / Android default video controls and overlay play buttons */
+.hero-video video::-webkit-media-controls,
+.hero-video video::-webkit-media-controls-panel,
+.hero-video video::-webkit-media-controls-play-button,
+.hero-video video::-webkit-media-controls-start-playback-button,
+.hero-video video::-webkit-media-controls-overlay-play-button{
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+.hero-video video{
+  pointer-events: none;         /* user can't accidentally pause; lets autoplay run uninterrupted */
+}
+
+/* -------- Mobile (≤760): the hero now fills the screen -------- */
+@media (max-width: 760px){
+  .hero-video,
+  .hero-video video{
+    min-height: 100svh;
+    height: 100svh;
+  }
+  /* Make sure the hero overlay sits cleanly inside the new taller area */
+  .hero-overlay{
+    align-items: flex-end;
+  }
+  .hero-copy{
+    padding-bottom: 36px;
+  }
+}
+
+/* Even smaller phones — keep title fitting on one line nicely */
+@media (max-width: 420px){
+  .hero-copy h1{ font-size: clamp(2.1rem, 10vw, 2.9rem); }
+  .hero-copy p{ font-size: 1rem; letter-spacing: .12em; }
+  .header-inner{ min-height: 64px; gap: 10px; }
+  .brand-name{ font-size: 1rem; }
+  .brand-sub{ font-size: .7rem; letter-spacing: .14em; }
+}
+
+/* -------- Short Stories with Sophia: 2-up grid, faster perceived load -------- */
+.story-grid{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 760px){
+  .story-grid{
+    grid-template-columns: 1fr;  /* one column on phones — no awkward empty slots */
+  }
+}
+.story-card .video-card{
+  aspect-ratio: 16/9;
+  height: auto;
+  min-height: 0;
+  background: var(--green-deep);
+}
+.story-card .video-frame{
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+/* Pager spacing tighten */
+.story-pager{ margin-top: 22px; }
+
+/* -------- Reels page on iPhone: video frame keeps proper 16:9 -------- */
+@media (max-width: 760px){
+  .reel-card .video-card,
+  .reel-card .video-frame{
+    aspect-ratio: 16/9;
+    height: auto;
+    min-height: 0;
+  }
+}
+
+/* -------- Make sure section padding doesn't push content off-screen on iPhone -------- */
+@media (max-width: 480px){
+  .section{ padding: 44px 0; }
+  .section-title{ font-size: clamp(1.9rem, 7vw, 2.4rem); }
+  .section-lead{ font-size: 1.05rem; }
+}

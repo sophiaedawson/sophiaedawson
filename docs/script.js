@@ -3,8 +3,30 @@ document.addEventListener('DOMContentLoaded', function () {
   const toggle=document.querySelector('.menu-toggle'),nav=document.querySelector('.site-nav');
   if(toggle&&nav)toggle.addEventListener('click',()=>nav.classList.toggle('open'));
   const heroVideo=document.querySelector('.hero-video video');
-  function tryPlayHero(){if(heroVideo){heroVideo.muted=true;heroVideo.setAttribute('muted','');heroVideo.setAttribute('playsinline','');heroVideo.setAttribute('webkit-playsinline','');const p=heroVideo.play();if(p&&p.catch)p.catch(()=>{});}}
-  if(heroVideo){heroVideo.removeAttribute('poster');heroVideo.preload='auto';heroVideo.loop=true;heroVideo.muted=true;heroVideo.playsInline=true;heroVideo.setAttribute('webkit-playsinline','');['DOMContentLoaded','load','scroll','touchstart','touchend','visibilitychange','pageshow'].forEach(evt=>{window.addEventListener(evt,tryPlayHero,{passive:true});document.addEventListener(evt,tryPlayHero,{passive:true});});heroVideo.addEventListener('canplay',tryPlayHero);heroVideo.addEventListener('ended',()=>{heroVideo.currentTime=0;tryPlayHero();});tryPlayHero();}
+  function tryPlayHero(){if(heroVideo){heroVideo.muted=true;heroVideo.defaultMuted=true;heroVideo.setAttribute('muted','');heroVideo.setAttribute('playsinline','');heroVideo.setAttribute('webkit-playsinline','');heroVideo.removeAttribute('controls');const p=heroVideo.play();if(p&&p.catch)p.catch(()=>{});}}
+  if(heroVideo){
+    heroVideo.removeAttribute('poster');
+    heroVideo.removeAttribute('controls');
+    heroVideo.preload='auto';
+    heroVideo.loop=true;
+    heroVideo.muted=true;
+    heroVideo.defaultMuted=true;
+    heroVideo.playsInline=true;
+    heroVideo.setAttribute('webkit-playsinline','');
+    heroVideo.setAttribute('muted','');
+    ['DOMContentLoaded','load','scroll','touchstart','touchend','click','visibilitychange','pageshow','focus'].forEach(evt=>{
+      window.addEventListener(evt,tryPlayHero,{passive:true});
+      document.addEventListener(evt,tryPlayHero,{passive:true});
+    });
+    heroVideo.addEventListener('canplay',tryPlayHero);
+    heroVideo.addEventListener('loadedmetadata',tryPlayHero);
+    heroVideo.addEventListener('ended',()=>{heroVideo.currentTime=0;tryPlayHero();});
+    // Retry several times on iOS where the first attempt sometimes fails silently
+    tryPlayHero();
+    setTimeout(tryPlayHero,300);
+    setTimeout(tryPlayHero,1000);
+    setTimeout(tryPlayHero,2500);
+  }
   // Theatre carousel — wraps around so Next at last slide returns to slide 1, Prev at slide 1 jumps to last.
   document.querySelectorAll('.carousel').forEach(function(carousel){
     const slides=carousel.querySelectorAll('.carousel-slide'),prev=carousel.querySelector('.prev'),next=carousel.querySelector('.next'),count=carousel.querySelector('.carousel-count');
@@ -19,14 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   function initFilterArea(area){const items=Array.from(area.querySelectorAll('[data-item]')),buttons=Array.from(area.querySelectorAll('[data-filter]')),loadMore=area.querySelector('[data-load-more]'),perPage=parseInt(area.getAttribute('data-per-page')||'12',10);let current='all',visible=perPage;function filtered(){return items.filter(item=>{const tags=(item.getAttribute('data-category')||'').split(' ');return current==='all'||tags.includes(current);});}function render(){const f=filtered();items.forEach(i=>i.classList.add('hidden'));f.forEach((i,idx)=>{if(idx<visible)i.classList.remove('hidden');});if(loadMore)loadMore.classList.toggle('hidden',f.length<=visible);}buttons.forEach(btn=>btn.addEventListener('click',()=>{buttons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');current=btn.getAttribute('data-filter');visible=perPage;render();}));if(loadMore)loadMore.addEventListener('click',()=>{visible+=perPage;render();});render();}
   document.querySelectorAll('[data-filter-area]').forEach(initFilterArea);
-  const filmMenu=document.querySelector('[data-film-filter]');if(filmMenu){const links=Array.from(filmMenu.querySelectorAll('[data-filter]')),cards=Array.from(document.querySelectorAll('.film-results>.credit-card'));function render(filter){links.forEach(l=>l.classList.toggle('active',l.getAttribute('data-filter')===filter));cards.forEach(c=>{const cat=c.getAttribute('data-category');c.classList.toggle('hidden',!(filter==='all'||filter===cat));});}links.forEach(l=>l.addEventListener('click',e=>{e.preventDefault();render(l.getAttribute('data-filter'));}));render('all');}
+  const filmMenu=document.querySelector('[data-film-filter]');if(filmMenu){const links=Array.from(filmMenu.querySelectorAll('[data-filter]')),cards=Array.from(document.querySelectorAll('.film-results>.credit-card'));function render(filter){links.forEach(l=>l.classList.toggle('active',l.getAttribute('data-filter')===filter));cards.forEach(c=>{const cat=c.getAttribute('data-category');c.classList.toggle('hidden',!(filter==='all'||filter===cat));});}links.forEach(l=>l.addEventListener('click',e=>{e.preventDefault();render(l.getAttribute('data-filter'));const filmSection=document.querySelector('.film-layout')||document.querySelector('main .section');if(filmSection){const top=filmSection.getBoundingClientRect().top+window.pageYOffset-90;window.scrollTo({top:Math.max(0,top),behavior:'smooth'});}}));render('all');}
   const book=document.querySelector('[data-book-viewer]');if(book){const img=book.querySelector('img'),btn=book.querySelector('[data-book-toggle]');let front=true;if(img){img.src='assets/images/poetry-book-cover2.jpg';img.alt='Poetry book cover front';}if(btn&&img)btn.addEventListener('click',()=>{front=!front;img.src=front?'assets/images/poetry-book-cover2.jpg':'assets/images/poetry-book-cover.jpg';img.alt=front?'Poetry book cover front':'Poetry book cover back';btn.textContent=front?'View Back Cover':'View Front Cover';});}
 
   // Short Stories pager — 3 at a time with Previous / Next, no slow incremental loading.
   const storyList=document.querySelector('[data-story-list]');
   if(storyList){
     const cards=Array.from(storyList.querySelectorAll('[data-story-card]'));
-    const pageSize=3;
+    const pageSize=2;
     let page=0;
     const totalPages=Math.max(1,Math.ceil(cards.length/pageSize));
     // Replace any existing single load-more button with a prev/next pager
