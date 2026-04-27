@@ -1,0 +1,38 @@
+body {
+  margin:0;
+  font-family: serif;
+  background:#f5f2ea;
+}
+
+nav {
+  position:fixed;
+  top:0;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  padding:20px;
+  background:rgba(255,255,255,0.8);
+}
+
+.hero video {
+  width:100%;
+  height:100vh;
+  object-fit:cover;
+}
+
+.secret {
+  position:fixed;
+  bottom:10px;
+  left:50%;
+  transform:translateX(-50%);
+  animation: rainbow 1s infinite;
+}
+
+@keyframes rainbow {
+  0%{color:red}
+  25%{color:orange}
+  50%{color:green}
+  75%{color:blue}
+  100%{color:purple}
+}
