@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function markPlaying(){if(heroSection)heroSection.classList.add('is-playing');}
   function tryPlayHero(){if(heroVideo){heroVideo.muted=true;heroVideo.defaultMuted=true;heroVideo.setAttribute('muted','');heroVideo.setAttribute('playsinline','');heroVideo.setAttribute('webkit-playsinline','');heroVideo.removeAttribute('controls');const p=heroVideo.play();if(p&&p.then)p.then(markPlaying).catch(()=>{});else markPlaying();}}
   if(heroVideo){
-    // Note: we KEEP the poster attribute so iOS shows the first frame instead of a black screen + play button
+    // Hero video: clean black-to-video transition, no poster, no overlay
     heroVideo.removeAttribute('controls');
     heroVideo.preload='auto';
     heroVideo.loop=true;
