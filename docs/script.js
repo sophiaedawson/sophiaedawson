@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function markPlaying(){if(heroSection)heroSection.classList.add('is-playing');}
   function tryPlayHero(){if(heroVideo){heroVideo.muted=true;heroVideo.defaultMuted=true;heroVideo.setAttribute('muted','');heroVideo.setAttribute('playsinline','');heroVideo.setAttribute('webkit-playsinline','');heroVideo.removeAttribute('controls');const p=heroVideo.play();if(p&&p.then)p.then(markPlaying).catch(()=>{});else markPlaying();}}
   if(heroVideo){
-    heroVideo.removeAttribute('poster');
+    // Note: we KEEP the poster attribute so iOS shows the first frame instead of a black screen + play button
     heroVideo.removeAttribute('controls');
     heroVideo.preload='auto';
     heroVideo.loop=true;
@@ -31,8 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(tryPlayHero,500);
     setTimeout(tryPlayHero,1500);
     setTimeout(tryPlayHero,3000);
-    // Fallback: even if autoplay fails, reveal the video after 3s so the user sees the first frame instead of a blank box
-    setTimeout(markPlaying,3000);
   }
   // Theatre carousel — wraps around so Next at last slide returns to slide 1, Prev at slide 1 jumps to last.
   document.querySelectorAll('.carousel').forEach(function(carousel){
@@ -130,4 +128,49 @@ document.addEventListener('DOMContentLoaded', function () {
     if(now-lastTap<350){e.preventDefault();}
     lastTap=now;
   },{passive:false});
+
+  // ============================================================
+  // PDF POPUP VIEWER
+  // Intercepts clicks on PDF resume links and opens them in a
+  // fullscreen overlay. Press × or Spacebar or Esc to close,
+  // or tap outside the document to close.
+  // ============================================================
+  const pdfOverlay=document.createElement('div');
+  pdfOverlay.className='pdf-lightbox';
+  pdfOverlay.innerHTML='<button class="pdf-lightbox-close" type="button" aria-label="Close">×</button><div class="pdf-lightbox-frame"><iframe title="Document viewer" frameborder="0"></iframe></div>';
+  document.body.appendChild(pdfOverlay);
+  const pdfFrame=pdfOverlay.querySelector('iframe');
+  const pdfClose=pdfOverlay.querySelector('.pdf-lightbox-close');
+  function openPdf(url){
+    pdfFrame.src=url;
+    pdfOverlay.classList.add('open');
+    document.body.classList.add('pdf-open');
+  }
+  function closePdf(){
+    pdfOverlay.classList.remove('open');
+    document.body.classList.remove('pdf-open');
+    // Clear the iframe src so it doesn't keep loading in the background
+    setTimeout(()=>{pdfFrame.src='';},300);
+  }
+  // Catch every link that points to a .pdf and open it in our viewer
+  document.querySelectorAll('a[href$=".pdf"]').forEach(link=>{
+    link.addEventListener('click',e=>{
+      e.preventDefault();
+      const href=link.getAttribute('href');
+      if(href)openPdf(href);
+    });
+  });
+  pdfClose.addEventListener('click',closePdf);
+  pdfOverlay.addEventListener('click',e=>{
+    // Close if click is on the dark backdrop (not on the iframe itself)
+    if(e.target===pdfOverlay)closePdf();
+  });
+  // Spacebar / Escape to close
+  document.addEventListener('keydown',e=>{
+    if(!pdfOverlay.classList.contains('open'))return;
+    if(e.key===' '||e.key==='Spacebar'||e.key==='Escape'){
+      e.preventDefault();
+      closePdf();
+    }
+  });
 });
