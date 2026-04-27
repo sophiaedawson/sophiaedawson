@@ -329,6 +329,12 @@ img, video, iframe{
    This way, even if iOS doesn't autoplay the video, users always see
    a beautiful first-frame image instead of a green box or play button.
    Once the video starts playing, it sits on top of this. */
+.hero-video{
+  background-color: #000 !important;     /* deepest layer = black, never green or cream */
+  background-image: url('assets/images/home-hero-poster.jpg');
+  background-size: cover;
+  background-position: center;
+}
 .hero-video::before{
   content:"";
   position:absolute;
@@ -337,7 +343,7 @@ img, video, iframe{
   background-image: url('assets/images/home-hero-poster.jpg');
   background-size: cover;
   background-position: center;
-  background-color: #10271f;
+  background-color: #000;
   opacity: 1;
   transition: opacity .8s ease;
   pointer-events: none;
